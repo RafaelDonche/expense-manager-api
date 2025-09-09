@@ -6,6 +6,9 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Exception;
 
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -36,10 +39,21 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        // A implementação virá na próxima etapa
-        return null;
+        $secretKey = Yii::$app->params['jwtSecretKey'];
+
+        try {
+            $decoded = JWT::decode($token, new Key($secretKey, 'HS256'));
+            // Procura o usuário pelo ID contido no token
+            return static::findOne(['id' => $decoded->uid]);
+        } catch (Exception $e) {
+            // Se o token for inválido (expirado, assinatura incorreta, etc), retorna null
+            return null;
+        }
     }
 
     public function getId()
