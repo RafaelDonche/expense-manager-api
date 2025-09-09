@@ -76,13 +76,24 @@ class Despesa extends ActiveRecord implements Linkable
 
     public function fields()
     {
-        return [
+        $fields = [
             'id',
             'descricao',
             'categoria',
             'valor',
             'data',
         ];
+
+        if (Yii::$app->controller->action->id == 'view') {
+            $fields['criado_em'] = function ($model) {
+                return Yii::$app->formatter->asDatetime($model->created_at, 'php:d/m/Y H:i:s');
+            };
+            $fields['atualizado_em'] = function ($model) {
+                return Yii::$app->formatter->asDatetime($model->updated_at, 'php:d/m/Y H:i:s');
+            };
+        }
+
+        return $fields;
     }
 
     public function getLinks()

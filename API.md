@@ -18,7 +18,7 @@ O token deve ser enviado em todas as requisições para endpoints protegidos no 
 
 Permite que um novo usuário se cadastre no sistema. A senha é salva de forma criptografada.
 
-- **URL:** `/users/registrar`
+- **URL:** `/usuarios/registrar`
 - **Método:** `POST`
 - **Autenticação:** Nenhuma
 - **Corpo da Requisição (JSON):**
@@ -56,7 +56,7 @@ Permite que um novo usuário se cadastre no sistema. A senha é salva de forma c
 
 Autentica um usuário e retorna um token JWT.
 
-- **URL:** `/users/login`
+- **URL:** `/usuarios/login`
 - **Método:** `POST`
 - **Autenticação:** Nenhuma
 - **Corpo da Requisição (JSON):**
