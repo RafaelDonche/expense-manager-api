@@ -52,9 +52,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 // Rotas da API
-                'POST users/register' => 'user/register',
-                'POST users/login' => 'user/login',
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'expense'],
+                'POST usuarios/registrar' => 'user/register',
+                'POST usuarios/logar' => 'user/login',
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'despesa'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'user'],
             ],
         ],

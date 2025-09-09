@@ -4,7 +4,7 @@ Esta documentação descreve os endpoints disponíveis na API de Gerenciamento d
 
 ## Autenticação
 
-A API utiliza autenticação via **Token JWT (JSON Web Token)**. Para acessar os endpoints protegidos, é necessário primeiro obter um token através do endpoint de login, os tokens possuem 1 hora de validade.
+A API utiliza autenticação via **Token JWT (JSON Web Token)**. Para acessar os endpoints protegidos, é necessário primeiro obter um token através do endpoint de login (os tokens possuem 24 horas de validade).
 
 O token deve ser enviado em todas as requisições para endpoints protegidos no cabeçalho `Authorization`.
 
@@ -18,7 +18,7 @@ O token deve ser enviado em todas as requisições para endpoints protegidos no 
 
 Permite que um novo usuário se cadastre no sistema. A senha é salva de forma criptografada.
 
-- **URL:** `/users/register`
+- **URL:** `/users/registrar`
 - **Método:** `POST`
 - **Autenticação:** Nenhuma
 - **Corpo da Requisição (JSON):**
@@ -26,7 +26,7 @@ Permite que um novo usuário se cadastre no sistema. A senha é salva de forma c
 ```json
 {
     "email": "usuario@exemplo.com",
-    "password": "sua_senha"
+    "senha": "sua_senha"
 }
 ```
 
@@ -34,7 +34,7 @@ Permite que um novo usuário se cadastre no sistema. A senha é salva de forma c
 
 ```json
 {
-    "message": "User created successfully!",
+    "message": "Usuário criado com sucesso!",
     "id": 1,
     "email": "usuario@exemplo.com"
 }
@@ -46,7 +46,7 @@ Permite que um novo usuário se cadastre no sistema. A senha é salva de forma c
 {
     "errors": {
         "email": [
-            "Email \"usuario@exemplo.com\" has already been taken."
+            "Este e-mail já está cadastrado."
         ]
     }
 }
@@ -64,7 +64,7 @@ Autentica um usuário e retorna um token JWT.
 ```json
 {
     "email": "usuario@exemplo.com",
-    "password": "sua_senha_segura"
+    "senha": "sua_senha_segura"
 }
 ```
 
@@ -72,7 +72,7 @@ Autentica um usuário e retorna um token JWT.
 
 ```json
 {
-    "message": "User authenticated successfully!",
+    "message": "Usuário autenticado com sucesso!",
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3Mi..."
 }
 ```
@@ -81,7 +81,7 @@ Autentica um usuário e retorna um token JWT.
 
 ```json
 {
-    "error": "Invalid credentials."
+    "error": "Credenciais inválidas."
 }
 ```
 
@@ -95,31 +95,37 @@ Autentica um usuário e retorna um token JWT.
 
 Retorna uma lista paginada das despesas do usuário autenticado.
 
-- **URL:** `/expenses`
+- **URL:** `/despesas`
 - **Método:** `GET`
-- **Autenticação:** Obrigatória
 - **Parâmetros de URL (Query Params):**
-    - `category` (opcional, string): Filtra por categoria (`alimentação`, `transporte`, `lazer`).
-    - `year` (opcional, integer): Filtra por ano (ex: `2025`).
-    - `month` (opcional, integer): Filtra por mês (ex: `09`).
-    - `day` (opcional, integer): Filtra por mês (ex: `09`).
-    - `order_by_column` (opcional, string): Define a coluna para ordenação. Padrão: `expense_date`. Ex: `value` (ordena por valor).
-    - `order_by_type` (opcional, string): Define o tipo de ordenação. Padrão: `SORT_DESC` (decrescente). Outra opção: `SORT_ASC` (crescente).
-    - `page` (opcional, integer): Número da página. Padrão: `1`.
+    - `categoria` (opcional, string): Filtra por categoria (`Alimentação`, `Transporte`, `Lazer`).
+    - `ano` (opcional, integer): Filtra por ano (ex: `2025`).
+    - `mes` (opcional, integer): Filtra por mês (ex: `09`).
+    - `dia` (opcional, integer): Filtra por mês (ex: `09`).
+    - `coluna_ordenacao` (opcional, string): Define a coluna para ordenação. Padrão: `data`. Ex: `valor` (ordena por valor).
+    - `tipo_ordenacao` (opcional, string): Define o tipo de ordenação. Padrão: `SORT_DESC` (decrescente). Outra opção: `SORT_ASC` (crescente).
+    - `pagina` (opcional, integer): Número da página. Padrão: `1`.
 
 - **Resposta de Sucesso (200 OK):**
 
 ```json
 {
     "success": true,
-    "message": "Expenses listed successfully.",
+    "message": "Despesas listadas com sucesso.",
     "data": [
         {
             "id": 1,
-            "description": "Almoço de trabalho",
-            "category": "alimentação",
-            "value": "35.50",
-            "expense_date": "2025-09-09"
+            "descricao": "Almoço de trabalho",
+            "categoria": "Alimentação",
+            "valor": "35.50",
+            "data": "09/09/2025"
+        },
+        {
+            "id": 2,
+            "descricao": "Jantar em equipe",
+            "categoria": "Alimentação",
+            "valor": "115.80",
+            "data": "09/09/2025"
         }
     ]
 }
@@ -129,17 +135,16 @@ Retorna uma lista paginada das despesas do usuário autenticado.
 
 Registra uma nova despesa para o usuário autenticado.
 
-- **URL:** `/expenses`
+- **URL:** `/despesas`
 - **Método:** `POST`
-- **Autenticação:** Obrigatória
 - **Corpo da Requisição (JSON):**
 
 ```json
 {
-    "description": "Corrida de Uber",
-    "category": "transporte",
-    "value": 15.75,
-    "expense_date": "2025-09-10"
+    "descricao": "Corrida de Uber",
+    "categoria": "Transporte",
+    "valor": 15.75,
+    "data": "09/09/2025"
 }
 ```
 - **Resposta de Sucesso (201 Created):**
@@ -147,13 +152,13 @@ Registra uma nova despesa para o usuário autenticado.
 ```json
 {
     "success": true,
-    "message": "Expense created successfully!",
+    "message": "Despesa criada com sucesso!",
     "data": {
         "id": 2,
-        "description": "Corrida de Uber",
-        "category": "transporte",
-        "value": "15.75",
-        "expense_date": "2025-09-10"
+        "descricao": "Corrida de Uber",
+        "categoria": "Transporte",
+        "valor": "15.75",
+        "data": "09/09/2025"
     }
 }
 ```
@@ -162,25 +167,23 @@ Registra uma nova despesa para o usuário autenticado.
 
 Retorna os detalhes de uma despesa específica.
 
-- **URL:** `/expenses/{id}`
+- **URL:** `/despesas/{id}`
 - **Método:** `GET`
-- **Autenticação:** Obrigatória
 - **Resposta de Sucesso (200 OK):** (Estrutura similar à da criação)
 
 ### 2.4. Atualizar uma Despesa
 
 Atualiza os dados de uma despesa existente.
 
-- **URL:** `/expenses/{id}`
+- **URL:** `/despesas/{id}`
 - **Método:** `PUT` ou `PATCH`
-- **Autenticação:** Obrigatória
 - **Corpo da Requisição (JSON):**
 
 ```json
 {
-    "description": "Cinema",
-    "value": 45.00,
-    "category": "lazer"
+    "descricao": "Cinema",
+    "valor": 45.00,
+    "categoria": "Lazer"
 }
 ```
 - **Resposta de Sucesso (200 OK):** (Estrutura similar à da criação, com os dados atualizados)
@@ -189,15 +192,14 @@ Atualiza os dados de uma despesa existente.
 
 Exclui uma despesa específica.
 
-- **URL:** `/expenses/{id}`
+- **URL:** `/despesas/{id}`
 - **Método:** `DELETE`
-- **Autenticação:** Obrigatória
 - **Resposta de Sucesso (200 OK):**
 
 ```json
 {
     "success": true,
-    "message": "Expense deleted successfully!",
+    "message": "Despesa excluída com sucesso!",
     "data": null
 }
 ```

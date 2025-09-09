@@ -14,19 +14,14 @@ class UserController extends Controller
         $model = new User();
         
         $model->load(Yii::$app->request->post(), '');
-        
-        if (empty($model->email) || empty(Yii::$app->request->post('password'))) {
-            Yii::$app->response->statusCode = 400; // Bad Request
-            return ['error' => 'Email and password are required.'];
-        }
 
-        $model->setPassword(Yii::$app->request->post('password'));
+        $model->setPassword(Yii::$app->request->post('senha'));
         $model->generateAuthKey();
 
         if ($model->save()) {
             Yii::$app->response->statusCode = 201; // Created
             return [
-                'message' => 'User created successfully!',
+                'message' => 'Usuário criado com sucesso!',
                 'id' => $model->id,
                 'email' => $model->email,
             ];
@@ -39,7 +34,7 @@ class UserController extends Controller
     public function actionLogin()
     {
         $email = Yii::$app->request->post('email');
-        $password = Yii::$app->request->post('password');
+        $password = Yii::$app->request->post('senha');
 
         $user = User::findByEmail($email);
 
@@ -48,7 +43,7 @@ class UserController extends Controller
             $issuer = "http://localhost:8080";
             $audience = "http://localhost:8080";
             $issuedAt = time();
-            $expire = $issuedAt + 3600; // Token expira em 1 hora
+            $expire = $issuedAt + 86400; // Token expira em 24 horas
 
             $payload = [
                 'iss' => $issuer,
@@ -61,12 +56,12 @@ class UserController extends Controller
             $token = JWT::encode($payload, $secretKey, 'HS256');
 
             return [
-                'message' => 'User authenticated successfully!',
+                'message' => 'Usuário autenticado com sucesso!',
                 'token' => $token
             ];
         }
 
         Yii::$app->response->statusCode = 401; // Unauthorized
-        return ['error' => 'Invalid credentials.'];
+        return ['error' => 'Credenciais inválidas.'];
     }
 }

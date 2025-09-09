@@ -27,9 +27,11 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password_hash', 'auth_key'], 'required'],
-            [['email'], 'email'],
-            [['email'], 'unique'],
+            [['email'], 'required', 'message' => 'O campo "email" é obrigatório.'],
+            [['password_hash'], 'required', 'message' => 'O campo "senha" é obrigatório.'],
+            [['auth_key'], 'required', 'message' => 'O campo "auth_key" é obrigatório.'],
+            [['email'], 'email', 'message' => 'Informe um endereço de e-mail válido.'],
+            [['email'], 'unique', 'message' => 'Este e-mail já está cadastrado.'],
         ];
     }
 
@@ -90,5 +92,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+    public static function formatDate($date)
+    {
+        // Expects date in format dd/mm/yyyy
+        if (preg_match('/^(\d{2})\/(\d{2})\/(\d{4})$/', $date, $matches)) {
+            return $matches[3] . '-' . $matches[2] . '-' . $matches[1];
+        }
+        return null; // Invalid format
     }
 }
