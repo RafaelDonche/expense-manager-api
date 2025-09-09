@@ -109,9 +109,7 @@ class ExpenseController extends ActiveController
                     break;
                 case 'delete':
                     $message = 'Expense deleted successfully!';
-                    // A ação de delete não retorna dados, então definimos data como nulo
-                    $data = null; 
-                    // Forçamos o status para 200 OK para que a resposta com corpo seja enviada
+                    $data = null;
                     Yii::$app->response->statusCode = 200;
                     break;
                 case 'view':
