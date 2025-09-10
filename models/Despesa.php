@@ -54,7 +54,7 @@ class Despesa extends ActiveRecord implements Linkable
             [['categoria'], 'required', 'message' => 'O campo "categoria" é obrigatório.'],
             [['valor'], 'required', 'message' => 'O campo "valor" é obrigatório.'],
             [['data'], 'required', 'message' => 'O campo "data" é obrigatório.'],
-            [['valor'], 'number', 'message' => 'O campo "valor" deve ser um número.'],
+            [['valor'], 'number', 'min' => 0, 'message' => 'O campo "valor" deve ser um número maior ou igual a zero.'],
             [['data'], 'date', 'format' => 'php:d/m/Y', 'message' => 'O campo "data" deve ser uma data válida no formato dia/mês/ano.'],
             [['descricao'], 'string', 'max' => 255, 'message' => 'O campo "descricao" deve ter no máximo 255 caracteres.'],
             [

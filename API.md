@@ -56,7 +56,7 @@ Permite que um novo usuário se cadastre no sistema. A senha é salva de forma c
 
 Autentica um usuário e retorna um token JWT.
 
-- **URL:** `/usuarios/login`
+- **URL:** `/usuarios/logar`
 - **Método:** `POST`
 - **Autenticação:** Nenhuma
 - **Corpo da Requisição (JSON):**

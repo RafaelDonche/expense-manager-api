@@ -7,6 +7,9 @@ use yii\rest\ActiveController;
 use yii\filters\auth\HttpBearerAuth;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
+
+use function Psy\debug;
 
 class DespesaController extends ActiveController
 {
@@ -57,13 +60,8 @@ class DespesaController extends ActiveController
         $ano = Yii::$app->request->get('ano');
         $mes = Yii::$app->request->get('mes');
         $dia = Yii::$app->request->get('dia');
-        
-        $maxYear = (new \yii\db\Query())
-            ->select(['max_year' => new \yii\db\Expression('MAX(YEAR(data))')])
-            ->from('despesa')
-            ->scalar();
             
-        if ($ano !== null && (!is_numeric($ano) || $ano < 1 || $ano > $maxYear)) {
+        if ($ano !== null && (!is_numeric($ano))) {
             throw new \yii\web\BadRequestHttpException('Ano inválido.');
         }
         if ($mes !== null && (!is_numeric($mes) || $mes < 1 || $mes > 12)) {
@@ -87,7 +85,7 @@ class DespesaController extends ActiveController
         $orderType =  Yii::$app->request->get('tipo_ordenacao') == 'SORT_DESC' ? SORT_DESC : SORT_ASC;
         $currentPage = Yii::$app->request->get('pagina', 0);
 
-       return new ActiveDataProvider([
+        return new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
@@ -107,6 +105,7 @@ class DespesaController extends ActiveController
      */
     public function afterAction($action, $result)
     {
+        $rawResult = $result;
         $result = parent::afterAction($action, $result);
 
         if (Yii::$app->response->isSuccessful) {
@@ -129,14 +128,29 @@ class DespesaController extends ActiveController
                     break;
                 case 'index':
                     $message = 'Despesas listadas com sucesso.';
+                    if (!empty($data)) {
+                        $pagination = [
+                            'total_items' => (int) $rawResult->pagination->totalCount,
+                            'total_paginas' => $rawResult->pagination->getPageCount(),
+                            'pagina_atual' => $rawResult->pagination->getPage() + 1,
+                            'items_por_pagina' => $rawResult->pagination->getPageSize(),
+                        ];
+                    }
                     break;
             }
 
-            return [
-                'success' => true,
-                'message' => $message,
-                'data' => $data,
+            $return = [
+                'sucesso' => true,
+                'mensagem' => $message,
             ];
+
+            if (isset($pagination)) {
+                $return['_paginacao'] = $pagination;
+            }
+            
+            $return['dados'] = $data;
+
+            return $return;
         }
 
         return $result;
