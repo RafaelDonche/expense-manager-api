@@ -21,14 +21,14 @@ API RESTful desenvolvida como parte de um desafio técnico para gerenciamento de
 
 ## Decisões Técnicas
 
-[cite_start]Para a implementação deste projeto, foram tomadas as seguintes decisões técnicas, visando seguir as boas práticas de desenvolvimento e arquitetura[cite: 4]:
+Para a implementação deste projeto, foram tomadas as seguintes decisões técnicas, visando seguir as boas práticas de desenvolvimento e arquitetura[cite: 4]:
 
-* [cite_start]**Framework:** A API foi desenvolvida com **Yii2**, conforme solicitado, aproveitando sua arquitetura MVC, o poderoso ActiveRecord para manipulação de dados e seu sistema de migrações para versionamento do banco de dados.
+* **Framework:** A API foi desenvolvida com **Yii2**, conforme solicitado, aproveitando sua arquitetura MVC, o poderoso ActiveRecord para manipulação de dados e seu sistema de migrações para versionamento do banco de dados.
 * **Arquitetura:** Foi seguido o padrão MVC. A lógica de negócio e as regras de validação foram mantidas nos Models (`User`, `Despesa`), mantendo os Controllers enxutos e focados no controle do fluxo da requisição. O uso de `Behaviors` (`TimestampBehavior`, `BlameableBehavior`) permitiu automatizar tarefas repetitivas de forma limpa.
-* [cite_start]**Banco de Dados:** **MySQL** foi o SGBD escolhido, e toda a criação e evolução do schema é gerenciada pelas **Migrations** do Yii2, garantindo consistência e reprodutibilidade do banco.
-* [cite_start]**Autenticação:** A autenticação stateless foi implementada com **JSON Web Tokens (JWT)**, um padrão de mercado para APIs RESTful que garante segurança sem a necessidade de sessões no servidor.
-* **Ambiente de Desenvolvimento:** **Docker e Docker Compose** foram utilizados para criar um ambiente de desenvolvimento isolado, portátil e idêntico ao de produção. [cite_start]Isso elimina problemas de configuração de máquina local e facilita a instalação do projeto, que é composto por três serviços: `webserver` (Nginx), `app` (PHP-FPM) e `db` (MySQL).
-* **Design da API:** A API segue os princípios RESTful. As respostas de sucesso são padronizadas em um wrapper JSON contendo as chaves `sucesso`, `mensagem` e `dados`, melhorando a previsibilidade para os clientes da API. [cite_start]A listagem de despesas inclui metadados de paginação no corpo da resposta para facilitar o consumo por aplicações front-end.
+* **Banco de Dados:** **MySQL** foi o SGBD escolhido, e toda a criação e evolução do schema é gerenciada pelas **Migrations** do Yii2, garantindo consistência e reprodutibilidade do banco.
+* **Autenticação:** A autenticação stateless foi implementada com **JSON Web Tokens (JWT)**, um padrão de mercado para APIs RESTful que garante segurança sem a necessidade de sessões no servidor.
+* **Ambiente de Desenvolvimento:** **Docker e Docker Compose** foram utilizados para criar um ambiente de desenvolvimento isolado, portátil e idêntico ao de produção. Isso elimina problemas de configuração de máquina local e facilita a instalação do projeto, que é composto por três serviços: `webserver` (Nginx), `app` (PHP-FPM) e `db` (MySQL).
+* **Design da API:** A API segue os princípios RESTful. As respostas de sucesso são padronizadas em um wrapper JSON contendo as chaves `sucesso`, `mensagem` e `dados`, melhorando a previsibilidade para os clientes da API. A listagem de despesas inclui metadados de paginação no corpo da resposta para facilitar o consumo por aplicações front-end.
 * **Internacionalização (i18n):** O projeto foi adaptado para o português brasileiro, tanto nas rotas da API quanto nos formatos de data (`dd/mm/aaaa`), demonstrando flexibilidade e atenção à experiência do usuário. A conversão de formatos de data é tratada de forma transparente nos Models através dos eventos `beforeSave` e `afterSave`/`afterFind`.
 
 ## Pré-requisitos
