@@ -1,10 +1,15 @@
 <?php
 
 return [
+    // 'class' => 'yii\db\Connection',
+    // 'dsn' => 'mysql:host=localhost;dbname=expense_manager_api',
+    // 'username' => 'root',
+    // 'password' => 'root',
+    // 'charset' => 'utf8',
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=expense_manager_api',
-    'username' => 'root',
-    'password' => 'root',
+    'dsn' => 'mysql:host=db;dbname=expense_manager_db',
+    'username' => 'user',
+    'password' => 'password',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

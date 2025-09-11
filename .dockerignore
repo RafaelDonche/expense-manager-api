@@ -1,0 +1,12 @@
+# Arquivos do Docker
+Dockerfile
+docker-compose.yml
+nginx.conf
+
+# Dependências e arquivos de ambiente local
+vendor/
+runtime/
+web/assets/
+.env
+.git
+.gitignore
