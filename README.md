@@ -21,7 +21,7 @@ API RESTful desenvolvida como parte de um desafio técnico para gerenciamento de
 
 ## Decisões Técnicas
 
-Para a implementação deste projeto, foram tomadas as seguintes decisões técnicas, visando seguir as boas práticas de desenvolvimento e arquitetura[cite: 4]:
+Para a implementação deste projeto, foram tomadas as seguintes decisões técnicas, visando seguir as boas práticas de desenvolvimento e arquitetura:
 
 * **Framework:** A API foi desenvolvida com **Yii2**, conforme solicitado, aproveitando sua arquitetura MVC, o poderoso ActiveRecord para manipulação de dados e seu sistema de migrações para versionamento do banco de dados.
 * **Arquitetura:** Foi seguido o padrão MVC. A lógica de negócio e as regras de validação foram mantidas nos Models (`User`, `Despesa`), mantendo os Controllers enxutos e focados no controle do fluxo da requisição. O uso de `Behaviors` (`TimestampBehavior`, `BlameableBehavior`) permitiu automatizar tarefas repetitivas de forma limpa.
