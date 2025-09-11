@@ -31,7 +31,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['password_hash'], 'required', 'message' => 'O campo "senha" é obrigatório.'],
             [['auth_key'], 'required', 'message' => 'O campo "auth_key" é obrigatório.'],
             [['email'], 'email', 'message' => 'Informe um endereço de e-mail válido.'],
-            [['email'], 'unique', 'message' => 'Este e-mail já está cadastrado.'],
+            // [['email'], 'unique', 'message' => 'Este e-mail já está cadastrado.'],
         ];
     }
 

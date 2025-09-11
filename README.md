@@ -18,6 +18,7 @@ API RESTful desenvolvida como parte de um desafio técnico para gerenciamento de
     * Ordenação dos resultados customizada por campo e ordem.
     * Paginação automática nos resultados da listagem.
 * **Ambiente Padronizado:** Projeto totalmente conteinerizado com Docker, garantindo um ambiente de desenvolvimento e execução consistente e de fácil configuração.
+* **Testes Unitários:** Cobertura de testes unitários com Codeception para as regras de negócio dos Models.
 
 ## Decisões Técnicas
 
@@ -30,6 +31,7 @@ Para a implementação deste projeto, foram tomadas as seguintes decisões técn
 * **Ambiente de Desenvolvimento:** **Docker e Docker Compose** foram utilizados para criar um ambiente de desenvolvimento isolado, portátil e idêntico ao de produção. Isso elimina problemas de configuração de máquina local e facilita a instalação do projeto, que é composto por três serviços: `webserver` (Nginx), `app` (PHP-FPM) e `db` (MySQL).
 * **Design da API:** A API segue os princípios RESTful. As respostas de sucesso são padronizadas em um wrapper JSON contendo as chaves `sucesso`, `mensagem` e `dados`, melhorando a previsibilidade para os clientes da API. A listagem de despesas inclui metadados de paginação no corpo da resposta para facilitar o consumo por aplicações front-end.
 * **Internacionalização (i18n):** O projeto foi adaptado para o português brasileiro, tanto nas rotas da API quanto nos formatos de data (`dd/mm/aaaa`), demonstrando flexibilidade e atenção à experiência do usuário. A conversão de formatos de data é tratada de forma transparente nos Models através dos eventos `beforeSave` e `afterSave`/`afterFind`.
+* **Testes:** Para garantir a integridade da lógica de negócio, foram implementados **testes unitários** com **Codeception**. Os testes são executados em um banco de dados separado (`expense_manager_db_test`), que é automaticamente criado pelo ambiente Docker.
 
 ## Pré-requisitos
 
@@ -69,6 +71,21 @@ Após esses passos, a API estará em execução e acessível no endereço: `http
 ## Utilização da API
 
 Toda a especificação dos endpoints, incluindo URLs, parâmetros, corpos de requisição e exemplos de resposta, está documentada no arquivo `API.md`.
+
+## Executando os Testes
+
+O projeto está configurado com uma suíte de testes unitários para validar os Models.
+
+1.  **Execute as migrações no banco de dados de teste:**
+    O ambiente Docker já criou o banco de dados de teste, mas precisamos criar as tabelas nele.
+    ```bash
+    docker-compose exec app php yii migrate --db=db_test --interactive=0
+    ```
+
+2.  **Rode a suíte de testes unitários:**
+    ```bash
+    docker-compose exec app vendor/bin/codecept run unit
+    ```
 
 ## Parando o Ambiente
 

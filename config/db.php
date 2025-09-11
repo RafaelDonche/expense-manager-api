@@ -8,8 +8,8 @@ return [
     // 'charset' => 'utf8',
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=db;dbname=expense_manager_db',
-    'username' => 'user',
-    'password' => 'password',
+    'username' => 'root',
+    'password' => 'rootpassword',
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)

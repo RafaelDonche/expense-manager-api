@@ -6,8 +6,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: 'expense_manager_db'
-      MYSQL_USER: 'user'
-      MYSQL_PASSWORD: 'password'
+      # MYSQL_USER: 'user'
+      # MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'rootpassword'
     ports:
       - "3307:3306" # Expõe a porta para o host (opcional, bom para debug)

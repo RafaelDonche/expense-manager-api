@@ -1,0 +1,1 @@
+CREATE DATABASE IF NOT EXISTS `expense_manager_db_test`;
